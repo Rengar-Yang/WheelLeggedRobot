@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "../../../Arduino/libraries/MPU6050/src"
+		},
+		{
+			"name": "240213-114546-lolin_d32",
+			"path": "."
+		}
+	],
+	"settings": {
+		"stm32-for-vscode.openOCDPath": false,
+		"stm32-for-vscode.makePath": false,
+		"stm32-for-vscode.armToolchainPath": false
+	}
+}
