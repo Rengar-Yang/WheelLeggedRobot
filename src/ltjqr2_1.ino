@@ -43,7 +43,7 @@ extern long rxIndex;
 ///////////////////////LQR控制/////////////////////////
 float K_LQR[4];
 float X=acos(30),X_dot,Theta,Theta_dot;    //状态变量
-float OutputLQR = 0;    //输出量
+float OutputLQR = 1;    //输出量
 //////////////////////////////////////////////////////
 
 
