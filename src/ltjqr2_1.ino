@@ -1026,7 +1026,7 @@ void RXsbus()
     // sBus.channels[6] = ch_limiter(sBus.channels[6]);
     // sBus.channels[7] = ch_limiter(sBus.channels[7]);
    
-    sbuschx[0] =  map(sBus.channels[0], 170, 1800, -4400, 4400);
+    sbuschx[0] =  map(sBus.channels[0], 170, 1800, -550, 550);
     sbuschx[1] =  map(sBus.channels[1], 170, 1800, 33, -33);
     sbuschx[2] =  map(sBus.channels[2], 170, 1800, 0, 800);
     sbuschx[3] =  map(sBus.channels[3], 170, 1800, -40, 40);
@@ -2267,7 +2267,7 @@ void loop()
       if(car_ch5==1)
       {
         Target_y=map(car_ch2,-33,33,60,200);
-        Target_x=map(car_ch1,-4400,4400,-70,102);
+        Target_x=map(car_ch1,-550,550,-70,102);
         LegControl(Target_x,Target_y);
       }
 
