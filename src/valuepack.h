@@ -8,7 +8,7 @@
  
 #define RX_BOOL_NUM  0
 #define RX_BYTE_NUM  0
-#define RX_SHORT_NUM 9
+#define RX_SHORT_NUM 10
 #define RX_INT_NUM   0
 #define RX_FLOAT_NUM 0
  

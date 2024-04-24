@@ -78,6 +78,7 @@ int car_ch6 = 0;     //
 float car_ch7 = 0;     // 
 float car_ch8 = 0;     // 
 float car_ch9 = 0;
+float car_ch10 = 0;
 
 float Power_Voltage=0;
 
@@ -1015,6 +1016,7 @@ void RXsbus()
     sBus.channels[6] = rxpack.shorts[6];
     sBus.channels[7] = rxpack.shorts[7];
     sBus.channels[8] = rxpack.shorts[8];
+    sBus.channels[9] = rxpack.shorts[9];
     ////////////////////////////////////////////
 
     sBus.channels[0] = ch_limiter(sBus.channels[0]);
@@ -1044,6 +1046,7 @@ void RXsbus()
     car_ch7 = sBus.channels[6];
     car_ch8 = sBus.channels[7];  
     car_ch9 = sbuschx[8];
+    car_ch10 = sBus.channels[9];
 
     if(abs(car_ch1)<111)
     {
@@ -2286,8 +2289,11 @@ void loop()
         int Apwm = -((int)(Abalance_pin(asd,(KalmanX.Angle-AngleX_bias))*100)-Tpwm);//角度环控制器
         int Bpwm = (int)(Bbalance_pin(bsd,(KalmanX.Angle-AngleX_bias))*100)+Tpwm;   
 
-        AngleX_bias+=0.01*(KalmanX.Angle-AngleX_bias);//重心自适应
-
+        if (car_ch10 == 1) // 开启重心自适应
+          AngleX_bias+=0.01*(KalmanX.Angle-AngleX_bias);//重心自适应
+        else 
+          AngleX_bias = 22.5;
+        
         if(Apwm>15000)
         Apwm = 15000;
 
