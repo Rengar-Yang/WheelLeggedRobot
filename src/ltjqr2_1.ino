@@ -1214,7 +1214,7 @@ void Read_motor_speed()
      {
           rxbuf[ccnt] = dat; 
           ccnt++;
-          if(ccnt==TxIndex-1)
+          if(ccnt==TxIndex)
           {
               if(crc1(rxbuf))
               {
@@ -1248,14 +1248,12 @@ void Read_motor_speed()
               }
               else
               {
-                
-
                 rxbuf[0] = 0;
                 rxbuf[1] = 0;
                 recstatu = 0;
                 packerflag = 0;//用于告知系统已经接收失败
                 ccnt = 0;  
-                                         
+                Serial.println("Communication error!");                                
               }                   
           }  
       }
@@ -1266,7 +1264,7 @@ void Read_motor_speed()
           recstatu = 0;
           packerflag = 0;//用于告知系统已经接收失败
           ccnt = 0;
-          Serial.println("Communication error!");        
+         
       }         
   }
 }  
