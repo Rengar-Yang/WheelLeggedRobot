@@ -125,7 +125,7 @@ struct{
 /* IMU Data */
 bool imuReady = false;  // 
 float AngleZ=0,AngleX=0, AngleY=0;              
-float AngleX_bias=22.5, AngleY_bias=26.5;    
+float AngleX_bias=16.5, AngleY_bias=26.5;    
 bool dmpReady = false;  
 uint8_t mpuIntStatus;  
 uint8_t devStatus;      
@@ -1687,179 +1687,179 @@ void Keypad_detection()
   }
   
 
-   switch (show_f)
-   {
-    case 0:
+  //  switch (show_f)
+  //  {
+  //   case 0:
 
-            Serial.print(" ch1:"); 
-            Serial.print(car_ch1);   
-            Serial.print(" ch2:"); 
-            Serial.print(car_ch2);   
-            Serial.print(" ch3:"); 
-            Serial.print(car_ch3);   
-            Serial.print(" ch4:"); 
-            Serial.print(car_ch4);   
-            Serial.print(" ch5:"); 
-            Serial.print(car_ch5);   
-            Serial.print(" ch6:"); 
-            Serial.print(car_ch6);   
-            Serial.print(" ch7:"); 
-            Serial.print(car_ch7);   
-            Serial.print(" ch8:");   
-            Serial.print(car_ch8);  
-            Serial.print("\t");
-            Serial.print(Power_Voltage);    
-            Serial.print(" Ts:");
-            Serial.println(Ts,3);
+  //           Serial.print(" ch1:"); 
+  //           Serial.print(car_ch1);   
+  //           Serial.print(" ch2:"); 
+  //           Serial.print(car_ch2);   
+  //           Serial.print(" ch3:"); 
+  //           Serial.print(car_ch3);   
+  //           Serial.print(" ch4:"); 
+  //           Serial.print(car_ch4);   
+  //           Serial.print(" ch5:"); 
+  //           Serial.print(car_ch5);   
+  //           Serial.print(" ch6:"); 
+  //           Serial.print(car_ch6);   
+  //           Serial.print(" ch7:"); 
+  //           Serial.print(car_ch7);   
+  //           Serial.print(" ch8:");   
+  //           Serial.print(car_ch8);  
+  //           Serial.print("\t");
+  //           Serial.print(Power_Voltage);    
+  //           Serial.print(" Ts:");
+  //           Serial.println(Ts,3);
                 
-            break;
-    case 1:   
-            Serial.print((KalmanY.Angle-AngleY_bias),3);
-            Serial.print("\t");
-            Serial.print(AngleY,3);
-            Serial.print("\t");
-            Serial.print(AngleX,3);
-            //float y1 = (float)(-gy.y/16.4);
-            //float x1 = (float)(gy.x/16.4);
-            //Serial.print("\t");
-            //Serial.print(KalmanZ.Rate);
-            //Serial.print("\t");
-            //Serial.print(KalmanZ.Rate2);
-            //Serial.print("\t");
-            //Serial.print(Turn.ActualOut);
-            //Serial.print("aworld\t");
+  //           break;
+  //   case 1:   
+  //           Serial.print((KalmanY.Angle-AngleY_bias),3);
+  //           Serial.print("\t");
+  //           Serial.print(AngleY,3);
+  //           Serial.print("\t");
+  //           Serial.print(AngleX,3);
+  //           //float y1 = (float)(-gy.y/16.4);
+  //           //float x1 = (float)(gy.x/16.4);
+  //           //Serial.print("\t");
+  //           //Serial.print(KalmanZ.Rate);
+  //           //Serial.print("\t");
+  //           //Serial.print(KalmanZ.Rate2);
+  //           //Serial.print("\t");
+  //           //Serial.print(Turn.ActualOut);
+  //           //Serial.print("aworld\t");
             
-            //Serial.print(Hcm);
-            //Serial.print("\t");
-            //Serial.print(aaWorld.z);
-            Serial.println("\t");   
-            break;
-    case 2:
-            Serial.print(KalmanY.Angle);
-            Serial.print("\t");
-            Serial.print(AngleY_bias);
-            Serial.print("\t");
-            Serial.print(KalmanY.Angle-AngleY_bias);
-            Serial.print("\t");
-            Serial.print(KalmanX.Angle);
-            Serial.print("\t");
-            Serial.print(AngleX_bias);
-            Serial.print("\t");
-            Serial.print(KalmanX.Angle-AngleX_bias);
-            Serial.println("\t");    
-            if(key3)
-            {
-              key3 = 0;
-              EEPROM.writeFloat(30,AngleX);
-              EEPROM.writeFloat(40,AngleY);
-              EEPROM.commit();
-              AngleX_bias = EEPROM.readFloat(30);
-              AngleY_bias = EEPROM.readFloat(40);
-            }
+  //           //Serial.print(Hcm);
+  //           //Serial.print("\t");
+  //           //Serial.print(aaWorld.z);
+  //           Serial.println("\t");   
+  //           break;
+  //   case 2:
+  //           Serial.print(KalmanY.Angle);
+  //           Serial.print("\t");
+  //           Serial.print(AngleY_bias);
+  //           Serial.print("\t");
+  //           Serial.print(KalmanY.Angle-AngleY_bias);
+  //           Serial.print("\t");
+  //           Serial.print(KalmanX.Angle);
+  //           Serial.print("\t");
+  //           Serial.print(AngleX_bias);
+  //           Serial.print("\t");
+  //           Serial.print(KalmanX.Angle-AngleX_bias);
+  //           Serial.println("\t");    
+  //           if(key3)
+  //           {
+  //             key3 = 0;
+  //             EEPROM.writeFloat(30,AngleX);
+  //             EEPROM.writeFloat(40,AngleY);
+  //             EEPROM.commit();
+  //             AngleX_bias = EEPROM.readFloat(30);
+  //             AngleY_bias = EEPROM.readFloat(40);
+  //           }
                     
-            break;
-    case 3:
-            Serial.print(Bvelocity.err);
-            Serial.print("\t"); 
-            Serial.print(Avelocity.err);
-            Serial.println("\t");  
-            break; 
+  //           break;
+  //   case 3:
+  //           Serial.print(Bvelocity.err);
+  //           Serial.print("\t"); 
+  //           Serial.print(Avelocity.err);
+  //           Serial.println("\t");  
+  //           break; 
 
-    case 4:
-            //Serial.print(" Hpwm:"); 
-            //Serial.print(Height.ActualOut); 
+  //   case 4:
+  //           //Serial.print(" Hpwm:"); 
+  //           //Serial.print(Height.ActualOut); 
 
-            Serial.print(" Herr:"); 
-            Serial.print(Height.err); 
+  //           Serial.print(" Herr:"); 
+  //           Serial.print(Height.err); 
 
-            //Serial.print(" te:"); 
-            //Serial.print(Turn.err); 
+  //           //Serial.print(" te:"); 
+  //           //Serial.print(Turn.err); 
             
-            //Serial.print(" Tpwm:"); 
-            //Serial.print(Turn.ActualOut); 
+  //           //Serial.print(" Tpwm:"); 
+  //           //Serial.print(Turn.ActualOut); 
 
-            Serial.print(" Apwm:"); 
-            Serial.print(Abalance.ActualOut); 
+  //           Serial.print(" Apwm:"); 
+  //           Serial.print(Abalance.ActualOut); 
             
-            Serial.print(" Bpwm:"); 
-            Serial.print(Bbalance.ActualOut); 
+  //           Serial.print(" Bpwm:"); 
+  //           Serial.print(Bbalance.ActualOut); 
 
-            Serial.print(" AI:"); 
-            Serial.print(Abalance.integral); 
+  //           Serial.print(" AI:"); 
+  //           Serial.print(Abalance.integral); 
             
-            Serial.print(" BI:"); 
-            Serial.print(Bbalance.integral); 
+  //           Serial.print(" BI:"); 
+  //           Serial.print(Bbalance.integral); 
 
-            Serial.print(" SApwm:"); 
-            Serial.print(Avelocity.ActualOut); 
+  //           Serial.print(" SApwm:"); 
+  //           Serial.print(Avelocity.ActualOut); 
             
-            Serial.print(" SBpwm:"); 
-            Serial.print(Bvelocity.ActualOut); 
+  //           Serial.print(" SBpwm:"); 
+  //           Serial.print(Bvelocity.ActualOut); 
             
-            Serial.print(" Ts:");
-            Serial.println(Ts,3);
+  //           Serial.print(" Ts:");
+  //           Serial.println(Ts,3);
 
-            if(key3)
-            {
-               key3 = 0;
-               if(start_f==1) start_f = 0;
-               else if(start_f==0) start_f = 1;              
-            }
+  //           if(key3)
+  //           {
+  //              key3 = 0;
+  //              if(start_f==1) start_f = 0;
+  //              else if(start_f==0) start_f = 1;              
+  //           }
     
-            break;     
+  //           break;     
             
-    case 5:
-            Serial.print(" APp:");
-            Serial.print(Abalance.Kp,3);
-            Serial.print(" APi:");
-            Serial.print(Abalance.Ki,3);    
-            Serial.print(" ASp:");
-            Serial.print(Avelocity.Kp,3);
-            Serial.print(" ASi:");
-            Serial.print(Avelocity.Ki,3);
+  //   case 5:
+  //           Serial.print(" APp:");
+  //           Serial.print(Abalance.Kp,3);
+  //           Serial.print(" APi:");
+  //           Serial.print(Abalance.Ki,3);    
+  //           Serial.print(" ASp:");
+  //           Serial.print(Avelocity.Kp,3);
+  //           Serial.print(" ASi:");
+  //           Serial.print(Avelocity.Ki,3);
 
-            Serial.print(" BPp:");
-            Serial.print(Bbalance.Kp,3);
-            Serial.print(" BPi:");
-            Serial.print(Bbalance.Ki,3);    
-            Serial.print(" BSp:");
-            Serial.print(Bvelocity.Kp,3);
-            Serial.print(" BSi:");
-            Serial.print(Bvelocity.Ki,3);
-            Serial.print(" AH:");
-            Serial.println(Bvelocity.Ki,3);
+  //           Serial.print(" BPp:");
+  //           Serial.print(Bbalance.Kp,3);
+  //           Serial.print(" BPi:");
+  //           Serial.print(Bbalance.Ki,3);    
+  //           Serial.print(" BSp:");
+  //           Serial.print(Bvelocity.Kp,3);
+  //           Serial.print(" BSi:");
+  //           Serial.print(Bvelocity.Ki,3);
+  //           Serial.print(" AH:");
+  //           Serial.println(Bvelocity.Ki,3);
             
-            break;        
+  //           break;        
 
-    case 6:
+  //   case 6:
     
-            Serial.print(AngleY);
-            Serial.print("\t");
-            Serial.print(Abalance.ActualOut);
-            Serial.print("\t");
-            Serial.print(Avelocity.err);
-            Serial.print("\t");
-            Serial.print(Avelocity.ActualOut);
-            Serial.println("\t");        
+  //           Serial.print(AngleY);
+  //           Serial.print("\t");
+  //           Serial.print(Abalance.ActualOut);
+  //           Serial.print("\t");
+  //           Serial.print(Avelocity.err);
+  //           Serial.print("\t");
+  //           Serial.print(Avelocity.ActualOut);
+  //           Serial.println("\t");        
             
-            break;   
+  //           break;   
             
-    case 7:
-            Serial.print("Theta1:");
-            Serial.print(Theta1); 
-            Serial.print(" Theta2:");
-            Serial.print(Theta2); 
-            Serial.print(" Leg_x:");
-            Serial.print(Leg_x); 
-            Serial.print(" Leg_y:");
-            Serial.print(Leg_y); 
-            Serial.println("\t"); 
-            break;              
+  //   case 7:
+  //           Serial.print("Theta1:");
+  //           Serial.print(Theta1); 
+  //           Serial.print(" Theta2:");
+  //           Serial.print(Theta2); 
+  //           Serial.print(" Leg_x:");
+  //           Serial.print(Leg_x); 
+  //           Serial.print(" Leg_y:");
+  //           Serial.print(Leg_y); 
+  //           Serial.println("\t"); 
+  //           break;              
                               
-    default:  
-              ;//printf("default!\n");
-        break;
-  }    
+  //   default:  
+  //             ;//printf("default!\n");
+  //       break;
+  // }    
 }
 
 void ReadVoltage()
@@ -2292,7 +2292,7 @@ void loop()
         if (car_ch10 == 1) // 开启重心自适应
           AngleX_bias+=0.01*(KalmanX.Angle-AngleX_bias);//重心自适应
         else 
-          AngleX_bias = 22.5;
+          AngleX_bias = 16.5;
         
         if(Apwm>15000)
         Apwm = 15000;
@@ -2364,10 +2364,10 @@ void loop()
   
 
     ReadVoltage();
-    // Serial.print(KalmanX.Angle);
-    // Serial.print(",");
-    // Serial.print(AngleX);
-    // Serial.print("\n");
+    Serial.print(KalmanX.Angle);
+    Serial.print(",");
+    Serial.print(AngleX);
+    Serial.print("\n");
     Keypad_detection();
 //    OledShow();
     ch4 = Bfilter(car_ch4);
