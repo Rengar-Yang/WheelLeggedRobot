@@ -162,15 +162,20 @@ int channel2 = 2;    //
 int channel3 = 3;    // 
 
 
+////////////////////////////双板通信////////////////////////////////
 String comdata = "";    //串口接收数据
 char terminator = '=';
+
+uint8_t RxIndex = 8;//接收数据包字节数
+uint8_t TxIndex = 8;//发送数据包字节数
 
 unsigned char recstatu = 0;//表示是否处于一个正在接收数据包的状态
 unsigned char ccnt = 0;//计数
 unsigned char packerflag = 0;//是否接收到一个完整的数据包标志
-unsigned char rxbuf[7] = {0,0,0,0,0,0,0};//接收数据的缓冲区
-unsigned char txbuf[7] = {0,0,0,0,0,0,0};
+unsigned char rxbuf[8] = {0,0,0,0,0,0,0,0};//接收数据的缓冲区
+unsigned char txbuf[8] = {0,0,0,0,0,0,0,0};
 unsigned char dat = 0;
+///////////////////////////////////////////////////////////////////
 
 float B_Angle = 0;//设置机器高度
 float A_Angle = 0;
@@ -1147,12 +1152,12 @@ boolean crc1(unsigned char buffer[])
   unsigned int crc_bit1=0;
   unsigned int sum1=0;
   
-  for (int j = 2; j <=5; j++)
+  for (int j = 2; j <= (RxIndex-2); j++)
   {
     sum1 += buffer[j];
   }
   crc_bit1 = sum1 & 0xff;
-  if ((unsigned char)crc_bit1 == buffer[6])
+  if ((unsigned char)crc_bit1 == buffer[RxIndex-1])
     return true;
   else
     return false;
@@ -1163,7 +1168,7 @@ unsigned char crc2(unsigned char buffer[])
   unsigned int crc_bit1=0;
   unsigned int sum1=0;
   
-  for (int j = 2; j <=5; j++)
+  for (int j = 2; j <= (TxIndex-2); j++)
   {
     sum1 += buffer[j];
   }
@@ -1183,7 +1188,8 @@ void Set_motor_speed(int MA, int MB)
   txbuf[3]=ta&0xff;
   txbuf[4]=tb>>8;
   txbuf[5]=tb&0xff;
-  txbuf[6]=crc2(txbuf);
+  txbuf[6]=1;//预留数据位
+  txbuf[TxIndex-1]=crc2(txbuf);
   Serial1.write(txbuf,sizeof(txbuf));
 }
 
@@ -1208,7 +1214,7 @@ void Read_motor_speed()
      {
           rxbuf[ccnt] = dat; 
           ccnt++;
-          if(ccnt==7)
+          if(ccnt==TxIndex-1)
           {
               if(crc1(rxbuf))
               {
@@ -1260,6 +1266,7 @@ void Read_motor_speed()
           recstatu = 0;
           packerflag = 0;//用于告知系统已经接收失败
           ccnt = 0;
+          Serial.println("Communication error!");        
       }         
   }
 }  
