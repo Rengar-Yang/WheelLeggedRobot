@@ -94,7 +94,7 @@ float F_Kionix = 0;
 
 float LPF_value;  //滤波后的值
 
-int show_f = 2;   //显示标志位
+int show_f = 0;   //显示标志位
 int start_f = 0;
 int jdbz = 0;
 char jdbz_press_time = 0;
@@ -1597,6 +1597,7 @@ void Keypad_detection()
   boolean K1 = digitalRead(k1pin);
   boolean K2 = digitalRead(k2pin);
   boolean K3 = digitalRead(k3pin);
+  boolean Pressed = 0;
 
   if((car_ch5==0)||(car_ch5==1))
   {
@@ -1625,6 +1626,7 @@ void Keypad_detection()
     {            
       s1=0;       
       key1=1;
+      Pressed = 1;
     } 
   }
   else 
@@ -1646,6 +1648,7 @@ void Keypad_detection()
     {            
       s2=0;       
       key2=1;
+      Pressed = 1;
     } 
   }
   else 
@@ -1667,6 +1670,7 @@ void Keypad_detection()
     {            
       s3=0;       
       key3=1;
+      Pressed = 1;
     } 
   }
   else 
@@ -1683,16 +1687,53 @@ void Keypad_detection()
   {
     key1 = 0;
     show_f++;  
-    if(show_f>7)show_f = 7;
+    if(show_f>7)show_f = 0;
   }
   if(key2)
   {
     key2 = 0;
     show_f--; 
-    if(show_f<0)show_f = 0; 
+    if(show_f<0)show_f = 7; 
   }
   
+if (Pressed)
+  {
+    char str[10];
+    String a,b;
+    velocity_calc_timestamp_oled = now_us;
+    Pressed = 0;
+    switch (show_f)
+   {
+    case 0:   
+      a = "Remain power:";
+      sprintf(str, "%f", Power_Voltage);
+      OledInformation2(a,str);
+      break;
 
+    case 1:
+      a = "Current Balance Pitch:";
+      sprintf(str, "%f", AngleX_bias);
+      OledInformation2(a,str);
+      break;
+
+    case 2:
+      a = "Current Pitch:";
+      sprintf(str, "%f", KalmanX.Angle);
+      OledInformation2(a,str);
+      break;
+
+    case 3:
+      a = "Current Yaw:";
+      sprintf(str, "%f", KalmanY.Angle);
+      OledInformation2(a,str);
+      break;
+
+    default:  
+      a = "Empty function";
+      OledInformation1(a);
+      break;
+   }
+  }
   //  switch (show_f)
   //  {
   //   case 0:
@@ -2221,8 +2262,9 @@ void setup()
   //EEPROM_init();
   now_us = micros();
   velocity_calc_timestamp = now_us; 
+  velocity_calc_timestamp_oled = now_us;
   a = "Init conmplete!!";
-  b = "Robot running...";
+  b = "Press key to check data";
   OledInformation2(a,b);
 }
 
@@ -2234,8 +2276,9 @@ void loop()
   TsOled = (now_us - velocity_calc_timestamp_oled)*1e-6;
  
   if(Ts <= 0 || Ts > 0.5) Ts = 1e-3; 
-  if(TsOled <= 0 || TsOled > 10) TsOled = 1e-3;
-   
+  if(TsOled <= 0 || TsOled > 20) TsOled = 1e-3;
+
+  
   if (Ts>=0.01) //if (mpuInterrupt)
   {      
       velocity_calc_timestamp = now_us; 
@@ -2296,7 +2339,7 @@ void loop()
         int Bpwm = (int)(Bbalance_pin(bsd,(KalmanX.Angle-AngleX_bias))*100)+Tpwm;   
 
         if (car_ch10 == 1) // 开启重心自适应
-          AngleX_bias+=0.01*(KalmanX.Angle-AngleX_bias);//重心自适应
+          AngleX_bias+=0.005*(KalmanX.Angle-AngleX_bias);//重心自适应
         else 
           AngleX_bias = 16.5;
         
@@ -2372,7 +2415,7 @@ void loop()
     ReadVoltage();
     Serial.print(KalmanX.Angle);
     Serial.print(",");
-    Serial.print(AngleX);
+    Serial.print(KalmanZ.Angle);
     Serial.print("\n");
     Keypad_detection();
 //    OledShow();
