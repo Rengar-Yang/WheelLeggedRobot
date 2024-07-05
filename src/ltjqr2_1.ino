@@ -1039,6 +1039,8 @@ void RXsbus()
     sbuschx[3] =  map(sBus.channels[3], 170, 1800, -40, 40);
     sbuschx[4] =  map(sBus.channels[4], 170, 1800, 0, 2);
     sbuschx[5] =  map(sBus.channels[5], 170, 1800, 0, 2);
+    sbuschx[6] =  map(sBus.channels[6], 170, 1800, -550, 550);
+    sbuschx[7] =  map(sBus.channels[7], 170, 1800, 33, -33);
     sbuschx[8] =  map(sBus.channels[8], 170, 1800, 0, 2);
 
 
@@ -1048,8 +1050,8 @@ void RXsbus()
     car_ch4 = sbuschx[3]; 
     car_ch5 = sbuschx[4];
     car_ch6 = sbuschx[5];
-    car_ch7 = sBus.channels[6];
-    car_ch8 = sBus.channels[7];  
+    car_ch7 = sbuschx[6];
+    car_ch8 = sbuschx[7];  
     car_ch9 = sbuschx[8];
     car_ch10 = sBus.channels[9];
 
@@ -1188,8 +1190,8 @@ void Set_motor_speed(int MA, int MB)
   txbuf[3]=ta&0xff;
   txbuf[4]=tb>>8;
   txbuf[5]=tb&0xff;
-  txbuf[6]=map(car_ch1,-550,550,0,254);;//X轴位移量
-  txbuf[7]=map(car_ch2,-33,33,0,254);//Y轴位移量
+  txbuf[6]=map(car_ch7,-550,550,0,254);;//X轴位移量
+  txbuf[7]=map(car_ch8,-33,33,0,254);//Y轴位移量
   txbuf[TxIndex-1]=crc2(txbuf);
   Serial1.write(txbuf,sizeof(txbuf));
 }
@@ -1696,44 +1698,46 @@ void Keypad_detection()
     if(show_f<0)show_f = 7; 
   }
   
-if (Pressed)
-  {
-    char str[10];
-    String a,b;
-    velocity_calc_timestamp_oled = now_us;
-    Pressed = 0;
-    switch (show_f)
-   {
-    case 0:   
-      a = "Remain power:";
-      sprintf(str, "%f", Power_Voltage);
-      OledInformation2(a,str);
-      break;
+// if (Pressed)
+//   {
+//     char str[10];
+//     String a,b;
+//     velocity_calc_timestamp_oled = now_us;
+//     Pressed = 0;
+//     switch (show_f)
+//    {
+//     case 0:   
+//       a = "Remain power:";
+//       sprintf(str, "%f", Power_Voltage);
+//       OledInformation2(a,str);
+//       break;
 
-    case 1:
-      a = "Current Balance Pitch:";
-      sprintf(str, "%f", AngleX_bias);
-      OledInformation2(a,str);
-      break;
+//     case 1:
+//       a = "Current Balance Pitch:";
+//       sprintf(str, "%f", AngleX_bias);
+//       OledInformation2(a,str);
+//       break;
 
-    case 2:
-      a = "Current Pitch:";
-      sprintf(str, "%f", KalmanX.Angle);
-      OledInformation2(a,str);
-      break;
+//     case 2:
+//       a = "Current Pitch:";
+//       sprintf(str, "%f", KalmanX.Angle);
+//       OledInformation2(a,str);
+//       break;
 
-    case 3:
-      a = "Current Yaw:";
-      sprintf(str, "%f", KalmanY.Angle);
-      OledInformation2(a,str);
-      break;
+//     case 3:
+//       a = "Current Yaw:";
+//       sprintf(str, "%f", KalmanY.Angle);
+//       OledInformation2(a,str);
+//       break;
 
-    default:  
-      a = "Empty function";
-      OledInformation1(a);
-      break;
-   }
-  }
+//     default:  
+//       a = "Empty function";
+//       OledInformation1(a);
+//       break;
+//    }
+//   }
+
+
   //  switch (show_f)
   //  {
   //   case 0:
@@ -2330,8 +2334,8 @@ void loop()
         float asd = Avelocity_pin(car_ch2,Amotor_speed,Bmotor_speed);//速度环控制器
         float bsd = Bvelocity_pin(car_ch2,Amotor_speed,Bmotor_speed);
         
-        R_Gain = car_ch7*0.1;
-        R_Gain2 = car_ch8;
+        R_Gain = 35*0.1;
+        R_Gain2 = 10;
         A_AngleR = R_Gain*asd;//腿部关节角度变化
         B_AngleR = R_Gain*bsd;
 
@@ -2413,6 +2417,7 @@ void loop()
   
 
     ReadVoltage();
+    //上传数据至MATLAB
     Serial.print(KalmanX.Angle);
     Serial.print(",");
     Serial.print(KalmanZ.Angle);
