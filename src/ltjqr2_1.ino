@@ -166,14 +166,14 @@ int channel3 = 3;    //
 String comdata = "";    //串口接收数据
 char terminator = '=';
 
-uint8_t RxIndex = 9;//接收数据包字节数
-uint8_t TxIndex = 9;//发送数据包字节数
+uint8_t RxIndex = 12;//接收数据包字节数
+uint8_t TxIndex = 12;//发送数据包字节数
 
 unsigned char recstatu = 0;//表示是否处于一个正在接收数据包的状态
 unsigned char ccnt = 0;//计数
 unsigned char packerflag = 0;//是否接收到一个完整的数据包标志
-unsigned char rxbuf[9] = {0,0,0,0,0,0,0,0,0};//接收数据的缓冲区
-unsigned char txbuf[9] = {0,0,0,0,0,0,0,0,0};
+unsigned char rxbuf[12] = {0,0,0,0,0,0,0,0,0,0,0,0};//接收数据的缓冲区
+unsigned char txbuf[12] = {0,0,0,0,0,0,0,0,0,0,0,0};
 unsigned char dat = 0;
 ///////////////////////////////////////////////////////////////////
 
@@ -1192,6 +1192,9 @@ void Set_motor_speed(int MA, int MB)
   txbuf[5]=tb&0xff;
   txbuf[6]=map(car_ch7,-550,550,0,254);;//X轴位移量
   txbuf[7]=map(car_ch8,-33,33,0,254);//Y轴位移量
+  txbuf[8]=car_ch10;//自瞄开关
+  txbuf[9]=0;//预留数据位
+  txbuf[10]=0;//预留数据位
   txbuf[TxIndex-1]=crc2(txbuf);
   Serial1.write(txbuf,sizeof(txbuf));
 }
