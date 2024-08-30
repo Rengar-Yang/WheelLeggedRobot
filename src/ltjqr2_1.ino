@@ -1551,8 +1551,8 @@ void Set_servo_Angle(float aangle,float bangle,float aangleR,float bangleR)
 
 void LegControl(int x,int y)
 {
-  Leg_x = x; //Xc∈（35,80）
-  Leg_y = y; //Yc∈（75,115）
+  Leg_x = x; //Xc=16
+  Leg_y = y; //Yc=75
   cosfoai_12 = (Leg_x*Leg_x + Leg_y*Leg_y - l1*l1 - l2*l2)/(2 * l1 * l2);
   foai_12 = 2*pi - acos(cosfoai_12);
   cosfoai_01 = (l2*Leg_y*sin(foai_12)+Leg_x*(l2*cos(foai_12)+l1)) /((l2*cos(foai_12)+l1)*(l2*cos(foai_12)+l1)+l2*l2*(sin(foai_12))*(sin(foai_12)));
@@ -1604,7 +1604,7 @@ void Keypad_detection()
   boolean K3 = digitalRead(k3pin);
   boolean Pressed = 0;
 
-  if((car_ch5==0)||(car_ch5==1))
+  if((car_ch5==1))
   {
     ch5_press_time++;
     if(ch5_press_time>50)
@@ -1613,7 +1613,7 @@ void Keypad_detection()
       start_f = 0;
     }    
   }
-  if(car_ch5==2)
+  if((car_ch5==0)||car_ch5==2)
   {
     ch5_press_time++;
     if(ch5_press_time>50)
@@ -2351,16 +2351,16 @@ void loop()
           AngleX_bias = 16.5;
         
         if(Apwm>15000)
-        Apwm = 15000;
+          Apwm = 15000;
 
         if(Apwm<(-15000))
-        Apwm = -15000;
+          Apwm = -15000;
 
         if(Bpwm>15000)
-        Bpwm = 15000;
+          Bpwm = 15000;
 
         if(Bpwm<(-15000))
-        Bpwm = -15000;
+          Bpwm = -15000;
  
         int acz = abs(Apwm-Apwm1);
         int bcz = abs(Bpwm-Bpwm1);
